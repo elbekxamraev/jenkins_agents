@@ -1,8 +1,4 @@
 ---
- - name: delete old package
-   yum:
-    name: java-1.8.0-openjdk
-    state: removed
  - name: Install Java Development Kit (JDK)
    yum:
      name: java-11-openjdk-devel
