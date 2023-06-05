@@ -1,0 +1,8 @@
+[dev]
+3.82.195.151
+34.207.252.12
+18.208.198.42
+
+
+[all:vars]
+ansible_ssh_private_key_file=/home/ec2-user/key-demo.pem 

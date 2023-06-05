@@ -1,0 +1,47 @@
+---
+ - name: delete old package
+   yum:
+    name: java-1.8.0-openjdk
+    state: removed
+ - name: Install Java Development Kit (JDK)
+   yum:
+     name: java-11-openjdk-devel
+     state: present
+ - name: Add Jenkins repository key
+   rpm_key:
+     key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+     state: present
+ - name: Add Jenkins repository
+   yum_repository:
+     name: jenkins
+     baseurl: https://pkg.jenkins.io/redhat-stable
+     description: Jenkins Repository
+     enabled: true
+     gpgcheck: true
+     gpgkey: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+ - name: Install Jenkins
+   package:
+     name: jenkins
+     state: present
+ - name: start jenkins
+   systemd:
+    name: jenkins
+    state: started
+
+ - name: enable jenkins
+   systemd:
+    name: jenkins
+    enabled: true
+
+ - name: sleep for 30 seconds and continue with play
+   wait_for: timeout=30
+   delegate_to: localhost
+
+ - name: init password jenkin
+   shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+   changed_when: false
+   register: result
+
+ - name: print init password jenkins
+   debug:
+    var: result.stdout
